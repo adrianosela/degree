@@ -21,17 +21,19 @@ func main() {
 	})
 
 	operateCSV("degree.csv", func(record []string) error {
+		course := record[2]
+		requirement := record[4]
 		credits, err := strconv.Atoi(record[5])
 		if err != nil {
 			return fmt.Errorf("could not convert credits to integer: %s", err)
 		}
 
-		if _, ok := reqs[record[4]]; ok {
-			reqs[record[4]] -= credits
-			fmt.Printf("course %s applied to requirement: %s\n", record[2], record[4])
-			if reqs[record[4]] <= 0 {
-				fmt.Printf("satisfied requirement: %s!\n", record[4])
-				delete(reqs, record[4])
+		if _, ok := reqs[requirement]; ok {
+			reqs[requirement] -= credits
+			fmt.Printf("course %s applied to requirement: %s\n", course, requirement)
+			if reqs[requirement] <= 0 {
+				fmt.Printf("satisfied requirement: %s!\n", requirement)
+				delete(reqs, requirement)
 			}
 		}
 		return nil
