@@ -8,14 +8,14 @@ import (
 )
 
 func main() {
-	parseFile("degree.csv", func(record []string) {
+	operateCSV("degree.csv", func(record []string) {
 		fmt.Println(record[2])
 	})
 }
 
-// parseFile operates on a CSV file by ignoring the first
+// operateCSV operates on a CSV file by ignoring the first
 // row (header) and running the handler for every other row
-func parseFile(path string, handler func([]string)) error {
+func operateCSV(path string, handler func([]string)) error {
 	f, err := os.Open(path)
 	if err != nil {
 		return fmt.Errorf("could not open csv file: %s", err)
