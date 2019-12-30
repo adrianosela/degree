@@ -9,17 +9,21 @@ import (
 )
 
 func main() {
-	reqs := make(map[string]int)
+	reqs := make(map[string]int)         // requirement to required credits
+	courses := make(map[string][]string) // requirement to applied courses
 
+	// parse degree requirements file
 	operateCSV("requirements.csv", func(record []string) error {
+		requirement := record[0]
 		credits, err := strconv.Atoi(record[1])
 		if err != nil {
 			return fmt.Errorf("could not convert credits to integer: %s", err)
 		}
-		reqs[record[0]] = credits
+		reqs[requirement] = credits
 		return nil
 	})
 
+	// parse courses file
 	operateCSV("degree.csv", func(record []string) error {
 		course := record[2]
 		requirement := record[4]
@@ -30,9 +34,9 @@ func main() {
 
 		if _, ok := reqs[requirement]; ok {
 			reqs[requirement] -= credits
-			fmt.Printf("course %s applied to requirement: %s\n", course, requirement)
+			courses[requirement] = append(courses[requirement], course)
 			if reqs[requirement] <= 0 {
-				fmt.Printf("satisfied requirement: %s!\n", requirement)
+				fmt.Printf("requirement \"%s\" satisfied with %v\n", requirement, courses[requirement])
 				delete(reqs, requirement)
 			}
 		}
