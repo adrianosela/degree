@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func main() {
@@ -36,7 +37,7 @@ func main() {
 			reqs[requirement] -= credits
 			courses[requirement] = append(courses[requirement], course)
 			if reqs[requirement] <= 0 {
-				fmt.Printf("requirement \"%s\" satisfied with %v\n", requirement, courses[requirement])
+				fmt.Printf("requirement \"%s\" satisfied with [%s]\n", requirement, strings.Join(courses[requirement], ", "))
 				delete(reqs, requirement)
 			}
 		}
